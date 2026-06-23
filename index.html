@@ -4,62 +4,113 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UniBeatz Radio — Built From Pressure</title>
-  <meta name="description" content="UniBeatz Radio — independent music, producers, DJs, artists, and culture. Built From Pressure." />
-  <meta name="theme-color" content="#050505" />
+  <meta name="description" content="UniBeatz Radio — independent music, DJs, artists, and culture. Built From Pressure." />
+  <meta name="theme-color" content="#050507" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@600;800&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="radio-manifest.json" />
   <link rel="stylesheet" href="radio.css" />
 </head>
 <body>
-  <main class="radio-shell">
-    <header class="radio-hero">
-      <div class="hero-badge">Powered by Unibeatzproduction</div>
-      <h1>UniBeatz Radio</h1>
-      <p class="tagline">Independent music. Original sounds. Built From Pressure.</p>
-      <div class="hero-actions">
-        <a class="btn btn-gold" href="#player">Listen Live</a>
-        <a class="btn btn-blue" href="#submit">Submit Music</a>
+  <div class="street-art street-left">Built From Pressure</div>
+  <div class="street-art street-right">UniBeatz Radio</div>
+  <div class="street-art street-floor">Respect The Art</div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">UNIBEATZ RADIO</a>
+      <div class="links">
+        <a href="#listen">Listen</a>
+        <a href="#submit">Submit</a>
+        <a href="radio-premium.html">Premium</a>
+        <a href="radio-dj-apply.html">DJ Apply</a>
+        <button id="radioAccountBtn" type="button">Sign In</button>
       </div>
-    </header>
+    </div>
+  </nav>
 
-    <section id="player" class="panel">
-      <div class="eyebrow">LIVE STATION</div>
-      <h2>Now Broadcasting</h2>
-      <p>Tap below to open the official UniBeatz Radio stream.</p>
-      <div id="radioPlayerMount"></div>
-      <div class="actions">
-        <a class="btn btn-gold" href="https://live365.com/station/UniBeatz-Radio-a01878" target="_blank" rel="noopener">Open Station ↗</a>
+  <main class="wrap">
+    <section class="hero">
+      <div class="panel">
+        <div class="eyebrow">INDEPENDENT MUSIC RADIO</div>
+        <h1 class="h1">UniBeatz <span>Radio</span></h1>
+        <p class="sub">Independent artists, producers, DJs, and original sounds. Powered by Unibeatzproduction. Built From Pressure.</p>
+
+        <div class="station" id="listen">
+          <div class="cover">📻</div>
+          <div class="meta">
+            <h3>Live Station</h3>
+            <p>Tap in to the official UniBeatz Radio stream.</p>
+            <span class="badge">Live365 · A01878</span>
+          </div>
+        </div>
+
+        <div class="player">
+          <div id="radioPlayerMount"></div>
+          <a class="btn btn-gold" href="https://live365.com/station/UniBeatz-Radio-a01878" target="_blank" rel="noopener">Open Station ↗</a>
+        </div>
       </div>
+
+      <aside class="panel" id="submit">
+        <div class="eyebrow">ARTIST SUBMISSIONS</div>
+        <h2 class="section-title">Submit Music</h2>
+        <p class="sub">Submit your track for review. Approved music may be added to UniBeatz Radio programming.</p>
+        <button id="openSubmitModal" class="btn btn-blue btn-full" type="button">Submit For Review</button>
+        <div id="stationNotice" class="notice"></div>
+      </aside>
     </section>
 
-    <section id="submit" class="panel">
-      <div class="eyebrow">ARTIST SUBMISSIONS</div>
-      <h2>Submit Your Track</h2>
-      <p>Independent artists can submit music for review. Approved tracks may be added to UniBeatz Radio programming.</p>
-      <button id="openSubmitModal" class="btn btn-blue" type="button">Submit for Review</button>
-      <div id="stationNotice" class="notice"></div>
+    <h2 class="section-title">Radio Channels</h2>
+    <section class="grid">
+      <article class="channel"><h4>Hip-Hop</h4><p>Independent bars, street energy, and culture.</p></article>
+      <article class="channel"><h4>R&B</h4><p>Smooth records, late-night sounds, and emotion.</p></article>
+      <article class="channel"><h4>Trap / Drill</h4><p>High-energy records and raw underground pressure.</p></article>
+      <article class="channel"><h4>Producer Showcase</h4><p>Beats, instrumentals, drops, and producer moments.</p></article>
     </section>
 
-    <section class="panel grid-panel">
-      <article>
-        <h2>Premium Radio</h2>
-        <p>Featured placements, promotional drops, and artist spotlights.</p>
-        <a class="btn btn-gold" href="radio-premium.html">View Premium</a>
-      </article>
-      <article>
-        <h2>DJ Program</h2>
-        <p>Apply to DJ, host shows, and help build the sound of the station.</p>
-        <a class="btn btn-blue" href="radio-dj-apply.html">Apply as DJ</a>
-      </article>
+    <h2 class="section-title">Featured Moves</h2>
+    <section class="track-list">
+      <a class="track" href="radio-premium.html">
+        <div class="name">Premium Radio</div>
+        <div class="desc">Featured placements, promotional drops, and artist spotlights.</div>
+      </a>
+      <a class="track" href="radio-dj-apply.html">
+        <div class="name">DJ Program</div>
+        <div class="desc">Apply to DJ, host shows, and help build the sound of the station.</div>
+      </a>
+      <a class="track" href="radio-dj-deck.html">
+        <div class="name">DJ Deck</div>
+        <div class="desc">Admin DJ tools, queue control, voiceovers, and station drops.</div>
+      </a>
+      <a class="track" href="admin-radio.html">
+        <div class="name">Admin</div>
+        <div class="desc">Review submissions and control radio assets.</div>
+      </a>
     </section>
-
-    <footer class="radio-footer">
-      <p>© UniBeatz Production LLC · UniBeatz Radio · Built From Pressure</p>
-      <nav>
-        <a href="admin-radio.html">Admin</a>
-        <a href="radio-dj-deck.html">DJ Deck</a>
-      </nav>
-    </footer>
   </main>
+
+  <div class="modal-wrap" id="submitModal">
+    <div class="modal">
+      <button class="x" id="closeSubmitModal" type="button">×</button>
+      <div class="eyebrow">SUBMIT FOR REVIEW</div>
+      <h2 class="section-title">Artist Submission</h2>
+      <form id="radioSubmitForm" class="form">
+        <input class="input" id="artistName" name="artistName" placeholder="Artist name" required>
+        <input class="input" id="email" name="email" type="email" placeholder="Email" required>
+        <input class="input" id="trackTitle" name="trackTitle" placeholder="Track title" required>
+        <input class="input" id="artistLink" name="artistLink" placeholder="Artist link / social link">
+        <input class="input" id="producerCredits" name="producerCredits" placeholder="Producer credits">
+        <select class="input" id="genre" name="genre">
+          <option>Hip-Hop</option><option>R&B</option><option>Trap</option><option>Afrobeats</option><option>Drill</option><option>Lo-Fi</option><option>Podcast / Radio Talk</option>
+        </select>
+        <textarea class="input" id="copyrightDeclaration" name="copyrightDeclaration" placeholder="Copyright / rights declaration"></textarea>
+        <label class="sub"><input id="rightsConfirm" type="checkbox" required> I confirm I have the rights to submit this audio.</label>
+        <input class="input" id="audioFile" name="audioFile" type="file" accept="audio/*" required>
+        <button class="btn btn-gold btn-full" type="submit">Submit Track</button>
+      </form>
+    </div>
+  </div>
 
   <script type="module" src="unibeatz-auth.js"></script>
   <script type="module" src="unibeatz-notifications.js"></script>
