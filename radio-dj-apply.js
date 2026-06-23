@@ -15,3 +15,10 @@ form.addEventListener('submit',async e=>{
     if(!auth.currentUser) await signInAnonymously(auth);
     const fd=new FormData(form);
     await addDoc(collection(db,'radio_dj_applications'),{
+djName:fd.get('djName')||'',realName:fd.get('realName')||'',email:fd.get('email')||'',cityState:fd.get('cityState')||'',socialLinks:fd.get('socialLinks')||'',djType:fd.get('djType')||'',genres:fd.get('genres')||'',availability:fd.get('availability')||'',experience:fd.get('experience')||'',sampleMixUrl:fd.get('sampleMixUrl')||'',rightsConfirm:!!fd.get('rightsConfirm'),status:'pending',rank:'Applicant',createdAt:serverTimestamp(),reviewedAt:null,submittedByUid:auth.currentUser?.uid||null
+    });
+    form.reset();notice.textContent='Application submitted. Admin review pending.';notice.style.color='
+#5dff9e';
+  }catch(err){console.error(err);notice.textContent='Application failed: '+(err.message||err);notice.style.color='
+#ff7474';}
+});  
