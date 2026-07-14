@@ -8,7 +8,7 @@
   'use strict';
 
   const OS = window.UniBeatzDJOS = window.UniBeatzDJOS || {};
-  OS.version = '3.0.0';
+  OS.version = '3.0.1';
   OS.state = OS.state || {
     platform: detectPlatform(),
     profiles: {},
@@ -631,10 +631,22 @@
   if(!OS) throw new Error('dj-core.js must load first');
 
   function actionOptions(){
+    const platform = OS.state.platform;
     return [...OS.actions.entries()]
+      .filter(([value]) => {
+        if(platform === 'radio') return !value.startsWith('battle.');
+        if(platform === 'battle') return !value.startsWith('radio.');
+        return true;
+      })
       .sort((a,b)=>a[1].label.localeCompare(b[1].label))
       .map(([value,entry])=>`<option value="${OS.util.esc(value)}">${OS.util.esc(entry.label)}</option>`)
       .join('');
+  }
+
+  function defaultAction(){
+    if(OS.state.platform === 'radio') return 'deckA.play';
+    if(OS.state.platform === 'battle') return 'battle.playBeat';
+    return 'deckA.play';
   }
 
   function build(){
@@ -665,29 +677,35 @@
       <div class="title">UniBeatz DJ OS V3</div>
       <div class="sub">MIDI + HID · Learn Mode · Radio + Battle · cloud mappings · LED hooks</div>
       <div class="row">
-        <button id="ubDjOSMidi" class="gold">CONNECT MIDI</button>
-        <button id="ubDjOSHid">CONNECT HID</button>
-        <button id="ubDjOSRescan">RESCAN</button>
-        <button id="ubDjOSPull" class="green">SYNC ACCOUNT</button>
-        <button id="ubDjOSPush" class="green">SAVE ACCOUNT</button>
+        <button id="ubDjOSMidi" class="gold" type="button">CONNECT MIDI</button>
+        <button id="ubDjOSHid" type="button">CONNECT HID</button>
+        <button id="ubDjOSRescan" type="button">RESCAN</button>
+        <button id="ubDjOSPull" class="green" type="button">SYNC ACCOUNT</button>
+        <button id="ubDjOSPush" class="green" type="button">SAVE ACCOUNT</button>
       </div>
       <div id="ubDjOSDevices" class="info">No controller connected.</div>
       <div class="row">
         <select id="ubDjOSAction">${actionOptions()}</select>
-        <button id="ubDjOSLearn" class="gold">LEARN NEXT CONTROL</button>
-        <button id="ubDjOSCancel">CANCEL</button>
+        <button id="ubDjOSLearn" class="gold" type="button">LEARN NEXT CONTROL</button>
+        <button id="ubDjOSCancel" type="button">CANCEL</button>
+        <button id="ubDjOSClearLast" type="button">CLEAR LAST MAPPING</button>
       </div>
       <div class="row">
-        <button id="ubDjOSExport">EXPORT MAPS</button>
-        <button id="ubDjOSImportBtn">IMPORT MAPS</button>
+        <button id="ubDjOSExport" type="button">EXPORT MAPS</button>
+        <button id="ubDjOSImportBtn" type="button">IMPORT MAPS</button>
         <input id="ubDjOSImport" type="file" accept="application/json" hidden>
-        <button id="ubDjOSClear">CLEAR ALL</button>
+        <button id="ubDjOSClear" type="button">CLEAR ALL</button>
       </div>
       <div id="ubDjOSNotice" class="info"></div>
       <div class="sig">Last signal: <span id="ubDjOSLastSignal">None</span></div>
       <div id="ubDjOSMappings"></div>
     `;
     host.appendChild(panel);
+
+    const actionSelect = panel.querySelector('#ubDjOSAction');
+    if(actionSelect && [...actionSelect.options].some(o => o.value === defaultAction())){
+      actionSelect.value = defaultAction();
+    }
 
     panel.querySelector('#ubDjOSMidi').onclick=()=>OS.midi.connect();
     panel.querySelector('#ubDjOSHid').onclick=()=>OS.hid.connect();
@@ -700,6 +718,16 @@
     panel.querySelector('#ubDjOSPush').onclick=()=>OS.cloud.push();
     panel.querySelector('#ubDjOSLearn').onclick=()=>OS.startLearn(panel.querySelector('#ubDjOSAction').value);
     panel.querySelector('#ubDjOSCancel').onclick=()=>OS.cancelLearn();
+    panel.querySelector('#ubDjOSClearLast').onclick=()=>{
+      const last = OS.state.lastSignal;
+      if(!last){
+        OS.util.notify('No last controller signal to clear.','#F0C040');
+        return;
+      }
+      OS.profiles.unmap(last.profileKey,last.signalKey);
+      OS.util.notify('Last controller mapping cleared.','#5dff9e');
+      render();
+    };
     panel.querySelector('#ubDjOSExport').onclick=()=>OS.profiles.export();
     panel.querySelector('#ubDjOSImportBtn').onclick=()=>panel.querySelector('#ubDjOSImport').click();
     panel.querySelector('#ubDjOSImport').onchange=async e=>{
@@ -713,13 +741,21 @@
         render();
       }
     };
-    panel.querySelector('#ubDjOSMappings').onclick=e=>{
+    panel.querySelector('#ubDjOSMappings').addEventListener('click',e=>{
       const btn=e.target.closest('[data-unmap]');
       if(!btn) return;
-      const [profileKey,signalKey]=JSON.parse(decodeURIComponent(btn.dataset.unmap));
-      OS.profiles.unmap(profileKey,signalKey);
-      render();
-    };
+      e.preventDefault();
+      e.stopPropagation();
+      try{
+        const [profileKey,signalKey]=JSON.parse(decodeURIComponent(btn.dataset.unmap));
+        OS.profiles.unmap(profileKey,signalKey);
+        OS.util.notify('Controller mapping cleared.','#5dff9e');
+        render();
+      }catch(error){
+        console.error('[UniBeatz DJ OS] Could not clear mapping:',error);
+        OS.util.notify('Could not clear that mapping. Use CLEAR LAST MAPPING.','#ff7474');
+      }
+    });
   }
 
   function renderLastSignal(){
@@ -750,7 +786,7 @@
         rows.push(`
           <div class="map">
             <div><strong>${OS.util.esc(p.label)}</strong><br><span class="sig">${OS.util.esc(sk)} → ${OS.util.esc(action)}</span></div>
-            <button data-unmap="${encodeURIComponent(JSON.stringify([pk,sk]))}">CLEAR</button>
+            <button type="button" data-unmap="${encodeURIComponent(JSON.stringify([pk,sk]))}">CLEAR</button>
           </div>
         `);
       }
