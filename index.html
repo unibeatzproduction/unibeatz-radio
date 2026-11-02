@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="UniBeatz Radio"/>
 <meta name="theme-color" content="#C9A84C"/>
 <link rel="manifest" href="radio-manifest.json"/>
-<link rel="apple-touch-icon" href="icons/radio-192.png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
 <title>UniBeatz Radio Station · UniBeatz Production</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="radio.css"/>
@@ -464,8 +464,8 @@ function ubSetupMediaSession() {
     artist: 'Live DJ Set · 24/7 Broadcast',
     album: 'Empire Rotation',
     artwork: [
-      { src: 'https://radio.unibeatzproduction.com/radio-512.png', sizes: '512x512', type: 'image/png' },
-      { src: 'https://radio.unibeatzproduction.com/radio-192.png', sizes: '192x192', type: 'image/png' }
+      { src: '/radio-now-playing-512.jpg', sizes: '512x341', type: 'image/jpeg' },
+      { src: '/radio-now-playing-192.jpg', sizes: '192x128', type: 'image/jpeg' }
     ]
   });
   navigator.mediaSession.setActionHandler('play', function() {
